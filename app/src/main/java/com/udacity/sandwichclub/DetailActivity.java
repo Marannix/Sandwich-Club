@@ -3,6 +3,7 @@ package com.udacity.sandwichclub;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,9 +17,13 @@ public class DetailActivity extends AppCompatActivity {
     public static final String EXTRA_POSITION = "extra_position";
     private static final int DEFAULT_POSITION = -1;
     private TextView description;
+    private TextView descriptionLabel;
     private TextView placeOfOrigin;
-    private TextView ingridents;
+    private TextView placeOfOriginLabel;
+    private TextView ingredient;
+    private TextView ingredientLabel;
     private TextView alsoKnownAs;
+    private TextView alsoKnownAsLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +33,13 @@ public class DetailActivity extends AppCompatActivity {
         ImageView ingredientsIv = findViewById(R.id.image_iv);
         description = findViewById(R.id.description_tv);
         placeOfOrigin = findViewById(R.id.origin_tv);
-        ingridents = findViewById(R.id.ingredients_tv);
+        ingredient = findViewById(R.id.ingredients_tv);
         alsoKnownAs = findViewById(R.id.also_known_tv);
+
+        descriptionLabel = findViewById(R.id.description_label);
+        placeOfOriginLabel = findViewById(R.id.place_of_origin_label);
+        ingredientLabel = findViewById(R.id.ingredients_label);
+        alsoKnownAsLabel = findViewById(R.id.also_known_label);
 
         Intent intent = getIntent();
         if (intent == null) {
@@ -66,10 +76,33 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void populateUI(Sandwich sandwich) {
-        description.setText(sandwich.getDescription());
-        placeOfOrigin.setText(sandwich.getPlaceOfOrigin());
-        ingridents.setText(sandwich.getIngredients().toString());
-        alsoKnownAs.setText(sandwich.getAlsoKnownAs().toString());
+        if (!sandwich.getDescription().isEmpty()) {
+            description.setText(sandwich.getDescription());
+        } else {
+            description.setVisibility(View.GONE);
+            descriptionLabel.setVisibility(View.GONE);
+        }
+
+        if (!sandwich.getPlaceOfOrigin().isEmpty()) {
+            placeOfOrigin.setText(sandwich.getPlaceOfOrigin());
+        } else {
+            placeOfOrigin.setVisibility(View.GONE);
+            placeOfOriginLabel.setVisibility(View.GONE);
+        }
+
+        if (!sandwich.getIngredients().isEmpty()) {
+            ingredient.setText(sandwich.getIngredients().toString());
+        } else {
+            ingredient.setVisibility(View.GONE);
+            ingredientLabel.setVisibility(View.GONE);
+        }
+
+        if (!sandwich.getAlsoKnownAs().isEmpty()) {
+            alsoKnownAs.setText(sandwich.getAlsoKnownAs().toString());
+        } else {
+            alsoKnownAs.setVisibility(View.GONE);
+            alsoKnownAsLabel.setVisibility(View.GONE);
+        }
 
     }
 }
