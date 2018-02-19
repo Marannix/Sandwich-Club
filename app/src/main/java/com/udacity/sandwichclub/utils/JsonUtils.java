@@ -10,48 +10,55 @@ import java.util.ArrayList;
 
 public class JsonUtils {
 
-    public static Sandwich parseSandwichJson(String json) {
-        try {
-            JSONObject jsonObject = new JSONObject(json);
+  public static final String JSON_NAME_STRING_KEY = "name";
+  public static final String JSON_MAIN_NAME_STRING_KEY = "mainName";
+  public static final String JSON_ALSO_KNOWN_AS_STRING_KEY = "alsoKnownAs";
+  public static final String JSON_PLACE_OF_ORIGIN_KEY = "placeOfOrigin";
+  public static final String JSON_DESCRIPTION_KEY = "description";
+  public static final String JSON_IMAGE_KEY = "image";
+  public static final String JSON_INGREDIENTS_KEY = "ingredients";
 
-            // name is an array.
-            JSONObject name = jsonObject.getJSONObject("name");
+  public static Sandwich parseSandwichJson(String json) {
+    try {
+      JSONObject jsonObject = new JSONObject(json);
 
-            // get String from name
-            String mainName = name.getString("mainName");
+      // name is an array.
+      JSONObject name = jsonObject.getJSONObject(JSON_NAME_STRING_KEY);
 
-            // get alsoKnownAs Array
-            JSONArray alsoKnownAsList = name.getJSONArray("alsoKnownAs");
-            ArrayList<String> alsoKnownAs = new ArrayList<>();
+      // get String from name
+      String mainName = name.getString(JSON_MAIN_NAME_STRING_KEY);
 
-            // for Loop for each item inside and place inside alsoKnownAs ArrayList
-            for (int i = 0; i < alsoKnownAsList.length(); i++) {
-                alsoKnownAs.add(alsoKnownAsList.getString(i));
-            }
+      // get alsoKnownAs Array
+      JSONArray alsoKnownAsList = name.getJSONArray(JSON_ALSO_KNOWN_AS_STRING_KEY);
+      ArrayList<String> alsoKnownAs = new ArrayList<>();
 
-            // Get String for placeOfOrigin
-            String placeOfOrigin = jsonObject.getString("placeOfOrigin");
-            // Get String for description
-            String description = jsonObject.getString("description");
-            // Get String for image
-            String image = jsonObject.getString("image");
+      // for Loop for each item inside and place inside alsoKnownAs ArrayList
+      for (int i = 0; i < alsoKnownAsList.length(); i++) {
+        alsoKnownAs.add(alsoKnownAsList.getString(i));
+      }
 
-            // get ingredient Array
-            JSONArray ingredientsList = jsonObject.getJSONArray("ingredients");
-            ArrayList<String> ingredients = new ArrayList<>();
+      // Get String for placeOfOrigin
+      String placeOfOrigin = jsonObject.optString(JSON_PLACE_OF_ORIGIN_KEY);
+      // Get String for description
+      String description = jsonObject.optString(JSON_DESCRIPTION_KEY);
+      // Get String for image
+      String image = jsonObject.optString(JSON_IMAGE_KEY);
 
-            // for Loop for each item inside and place inside ingredients ArrayList
-            for (int i = 0; i < ingredientsList.length(); i++) {
-                ingredients.add(ingredientsList.getString(i));
-            }
+      // get ingredient Array
+      JSONArray ingredientsList = jsonObject.getJSONArray(JSON_INGREDIENTS_KEY);
+      ArrayList<String> ingredients = new ArrayList<>();
 
-            // return new Sandwich
-            return new Sandwich(mainName, alsoKnownAs, placeOfOrigin, description, image, ingredients);
+      // for Loop for each item inside and place inside ingredients ArrayList
+      for (int i = 0; i < ingredientsList.length(); i++) {
+        ingredients.add(ingredientsList.getString(i));
+      }
 
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
+      // return new Sandwich
+      return new Sandwich(mainName, alsoKnownAs, placeOfOrigin, description, image, ingredients);
+    } catch (JSONException e) {
+      e.printStackTrace();
+      return null;
     }
+
+  }
 }
